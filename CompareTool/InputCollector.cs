@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using static CompareTool.Extentions;
 
 namespace CompareTool
 {
@@ -12,8 +13,7 @@ namespace CompareTool
         }
 
         public static string SetFileName()
-        {
-            var fileInspector = new Extentions();            
+        {         
             var folder = FolderReader.GetTestDataFolderPath();            
 
             string fileName = null;            
@@ -23,12 +23,12 @@ namespace CompareTool
             {
                 fileName = Console.ReadLine();                
                 var filePath = $"{folder}\\{fileName}";
-                bool isfileExist = fileInspector.IsFileExist(filePath);
+                bool isfileExist = IsFileExist(filePath);
 
                 if (isfileExist)
-                    return fileName;                    
-                else
-                    Console.WriteLine("{1}There is no such file '{0}' in The Test Folder, try another one{1}", fileName, "\n");
+                    return fileName;
+
+                Console.WriteLine("{1}There is no such file '{0}' in The Test Folder, try another one{1}", fileName, "\n");
 
                 attempt++;
             }

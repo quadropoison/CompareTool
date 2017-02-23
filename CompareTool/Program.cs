@@ -1,4 +1,5 @@
 ﻿using System;
+using static CompareTool.ConsoleOutput;
 using static CompareTool.InputCollector;
 
 namespace CompareTool
@@ -13,9 +14,9 @@ namespace CompareTool
             Console.WriteLine("Avaliable files list :\n");
             namesOfAvaliableFiles.ShowToConsoleStringsList();
 
-            ConsoleOutput.ShowInstructionsForFileWithNumber(1);
+            ShowInstructionsForFileWithNumber(1);
             var fileFirst = SetFileName();
-            ConsoleOutput.ShowInstructionsForFileWithNumber(2);
+            ShowInstructionsForFileWithNumber(2);
             var fileSecond = SetFileName();
             
             var fileBundle = CollectFileNamesToCompare(fileFirst, fileSecond);                                    
@@ -29,8 +30,12 @@ namespace CompareTool
             var fileFirstData = FileReader.GetFileContentAsText(fileFirst);
             var fileSecondData = FileReader.GetFileContentAsText(fileSecond);         
             
-            Comparator.CompareFilesAsText(fileFirstData, fileSecondData);
-            Console.ReadLine();
+            Comparator comparator = new Comparator();            
+            comparator.ComparisonSuccessfullyFinished += OnComparisonSuccessfullyFinished;
+            comparator.ComparisonUnsuccessfullyFinished += OnComparisonUnsuccessfullyFinished;
+            
+            comparator.CompareFilesAsText(fileFirstData, fileSecondData);
+            Console.ReadLine();         
         }
     }
 }

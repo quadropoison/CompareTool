@@ -2,9 +2,9 @@
 
 namespace CompareTool
 {
-    public class Extentions
+    public static class Extentions
     {
-        public bool IsFileExist(string fileFullPath)
+        public static bool IsFileExist(string fileFullPath)
         {
             if (File.Exists(fileFullPath))
             {
@@ -12,6 +12,16 @@ namespace CompareTool
             }
 
             return false;
+        }
+
+        public static bool IsDirectoryExist(string directory)
+        {
+            if (Directory.Exists(directory))
+            {
+                return true;
+            }
+
+            return false;         
         }
     }
 }

@@ -46,6 +46,20 @@ namespace CompareTool
             Console.ResetColor();
         }
 
+        public static void OnComparisonSuccessfullyFinished(Object source,  ComparatorEventArgs e)
+        {
+            FileWriter.OutputData = "Discrepancy found";
+            ShowDiscrepancyFound();    
+            FileWriter.WriteTxtOutput();        
+        }
+
+        public static void OnComparisonUnsuccessfullyFinished(Object source, ComparatorEventArgs e)
+        {
+            FileWriter.OutputData = "All data match";
+            ShowDataMatch();
+            FileWriter.WriteTxtOutput();            
+        }
+
         public static void ShowInstructionsWhenNoFilesFound(string fileName)
         {
             Console.ForegroundColor = ConsoleColor.Red;

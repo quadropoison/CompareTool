@@ -11,8 +11,16 @@ namespace CompareTool
         private static readonly string CurrentDirectory = Directory.GetCurrentDirectory();
 
         public static string GetOutputFolderPath()
-        {
-            return Path.Combine(CurrentDirectory, OutputFolderName);
+        {            
+            var outputFolder = Path.Combine(CurrentDirectory, OutputFolderName);
+
+            if (Extentions.IsDirectoryExist(outputFolder))
+            {
+                return outputFolder;
+            }
+
+            Directory.CreateDirectory(outputFolder);
+            return outputFolder;            
         }
 
         public static string GetTestDataFolderPath()

@@ -22,13 +22,4 @@ namespace CompareTool
             return fileContents;
         }
     }
-
-    public static class FileWriter
-    {
-        public static void WriteTxtOutput(string[] outputData)
-        {            
-            var outputPath = FolderReader.GetOutputFolderPath();
-            File.WriteAllLines(outputPath, outputData);
-        }
-    }
 }

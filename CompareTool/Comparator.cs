@@ -1,18 +1,38 @@
-﻿namespace CompareTool
+﻿using System;
+
+namespace CompareTool
 {
-    public static class Comparator
+    public class ComparatorEventArgs : EventArgs
     {
-        public static void CompareFilesAsText(string fileFirst, string fileSecond)
+        public string Output { get; set; }
+    }
+
+    public class Comparator
+    {
+        public event EventHandler<ComparatorEventArgs> ComparisonSuccessfullyFinished;        
+        public event EventHandler<ComparatorEventArgs> ComparisonUnsuccessfullyFinished;
+
+        public void CompareFilesAsText(string fileFirst, string fileSecond)
         {
             if (!CompareTwoObjects(fileFirst, fileSecond))
-                ConsoleOutput.ShowDiscrepancyFound();
+                OnComparisonSuccessfullyFinished();
             else
-                ConsoleOutput.ShowDataMatch();
+                OnComparisonUnsuccessfullyFinished();
         }
 
         private static bool CompareTwoObjects(object itemExpected, object itemActual)
         {
             return itemExpected.Equals(itemActual);
+        }
+
+        private void OnComparisonSuccessfullyFinished()
+        {
+            ComparisonSuccessfullyFinished?.Invoke(null, new ComparatorEventArgs());
+        }
+
+        private void OnComparisonUnsuccessfullyFinished()
+        {
+            ComparisonUnsuccessfullyFinished?.Invoke(null, new ComparatorEventArgs());
         }
     }
 }
