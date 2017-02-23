@@ -7,12 +7,8 @@ namespace CompareTool
     {
         static void Main(string[] args)
         {
-            FolderReader folderReader = new FolderReader();
-            FileReader fileReader = new FileReader();
-
-            var testDataFolder = folderReader.FindTestDataFolder();
-            var avaliableFilesInfo = folderReader.TakeAllFilesFromTestFolder(testDataFolder);
-            var namesOfAvaliableFiles = folderReader.GetAllFileNames(avaliableFilesInfo);
+            var avaliableFilesInfo = FolderReader.TakeAllFilesFromTestDataFolder();
+            var namesOfAvaliableFiles = FolderReader.GetAllFileNames(avaliableFilesInfo);
 
             Console.WriteLine("Avaliable files list :\n");
             namesOfAvaliableFiles.ShowToConsoleStringsList();
@@ -30,8 +26,8 @@ namespace CompareTool
             Console.WriteLine("{0}Press any key to compare ...{0}", "\n");
             Console.ReadLine();
                     
-            var fileFirstData = fileReader.GetFileContentAsText(testDataFolder, fileFirst);
-            var fileSecondData = fileReader.GetFileContentAsText(testDataFolder, fileSecond);         
+            var fileFirstData = FileReader.GetFileContentAsText(fileFirst);
+            var fileSecondData = FileReader.GetFileContentAsText(fileSecond);         
             
             Comparator.CompareFilesAsText(fileFirstData, fileSecondData);
             Console.ReadLine();

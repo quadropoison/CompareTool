@@ -13,9 +13,8 @@ namespace CompareTool
 
         public static string SetFileName()
         {
-            var fileInspector = new Extentions();
-            var folderReader = new FolderReader();
-            var folder = folderReader.FindTestDataFolder();
+            var fileInspector = new Extentions();            
+            var folder = FolderReader.GetTestDataFolderPath();            
 
             string fileName = null;            
             int attempt = 0;
@@ -23,13 +22,13 @@ namespace CompareTool
             while (attempt != 3)
             {
                 fileName = Console.ReadLine();                
-                var filePath = string.Format("{0}\\{1}", folder, fileName);
+                var filePath = $"{folder}\\{fileName}";
                 bool isfileExist = fileInspector.IsFileExist(filePath);
 
                 if (isfileExist)
                     return fileName;                    
                 else
-                    Console.WriteLine(string.Format("{1}There is no such file '{0}' in The Test Folder, try another one{1}", fileName, "\n"));
+                    Console.WriteLine("{1}There is no such file '{0}' in The Test Folder, try another one{1}", fileName, "\n");
 
                 attempt++;
             }

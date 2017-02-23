@@ -3,37 +3,41 @@ using System.IO;
 
 namespace CompareTool
 {
-    public class FolderReader
+    public static class FolderReader
     {
-        public string FindTestDataFolder()
+        private const string OutputFolderName = "Output";
+        private const string TestDataFolderName = "TestData";
+
+        private static readonly string CurrentDirectory = Directory.GetCurrentDirectory();
+
+        public static string GetOutputFolderPath()
         {
-            var testFolderName = "TestData";
-            var currentDirectory = Directory.GetCurrentDirectory();
-            var testDataFolder = Path.Combine(currentDirectory, testFolderName);
-            return testDataFolder;
+            return Path.Combine(CurrentDirectory, OutputFolderName);
         }
 
-        public IEnumerable<FileInfo> TakeAllFilesFromTestFolder(string testDataFolder)
+        public static string GetTestDataFolderPath()
         {
-            DirectoryInfo testDataFolderData = new DirectoryInfo(testDataFolder);
+            return Path.Combine(CurrentDirectory, TestDataFolderName);
+        }
 
-            IEnumerable<FileInfo> fileList = testDataFolderData.GetFiles("*.*", SearchOption.AllDirectories);
-
+        public static IEnumerable<FileInfo> TakeAllFilesFromTestDataFolder()
+        {
+            var testDataFolderPath = GetTestDataFolderPath();
+            DirectoryInfo testDataFolderInfo = new DirectoryInfo(testDataFolderPath);
+            IEnumerable<FileInfo> fileList = testDataFolderInfo.GetFiles("*.*", SearchOption.AllDirectories);
             return fileList;
         }
 
-        public FileInfo TakeOneFileFromTestFolder(string testDataFolder, string fileName)
+        public static FileInfo TakeOneFileFromTestFolder(string fileName)
         {
-            DirectoryInfo testDataFolderData = new DirectoryInfo(testDataFolder);
-
-            FileInfo[] fileArray = testDataFolderData.GetFiles(fileName, SearchOption.AllDirectories);
-
+            var testDataFolderPath = GetTestDataFolderPath();
+            DirectoryInfo testDataFolderInfo = new DirectoryInfo(testDataFolderPath);
+            FileInfo[] fileArray = testDataFolderInfo.GetFiles(fileName, SearchOption.AllDirectories);
             FileInfo file = fileArray[0];
-
             return file;
         }
 
-        public List<string> GetAllFileNames(IEnumerable<FileInfo> files)
+        public static List<string> GetAllFileNames(IEnumerable<FileInfo> files)
         {
             List<string> names = new List<string> { };
 

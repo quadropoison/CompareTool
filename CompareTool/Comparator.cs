@@ -2,9 +2,9 @@
 {
     public static class Comparator
     {
-        public static void CompareFilesAsText(string file1, string file2)
+        public static void CompareFilesAsText(string fileFirst, string fileSecond)
         {
-            if (!CompareTwoObjects(file1, file2))
+            if (!CompareTwoObjects(fileFirst, fileSecond))
                 ConsoleOutput.ShowDiscrepancyFound();
             else
                 ConsoleOutput.ShowDataMatch();
