@@ -8,8 +8,8 @@ namespace CompareTool
     {
         static void Main(string[] args)
         {
-            var avaliableFilesInfo = FolderReader.TakeAllFilesFromTestDataFolder();
-            var namesOfAvaliableFiles = FolderReader.GetAllFileNames(avaliableFilesInfo);
+            var avaliableFilesInfo = DirectoryObserver.TakeAllFilesFromTestDataFolder();
+            var namesOfAvaliableFiles = DirectoryObserver.GetAllFileNames(avaliableFilesInfo);
 
             Console.WriteLine("Avaliable files list :\n");
             namesOfAvaliableFiles.ShowToConsoleStringsList();

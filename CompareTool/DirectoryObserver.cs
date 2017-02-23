@@ -3,7 +3,7 @@ using System.IO;
 
 namespace CompareTool
 {
-    public static class FolderReader
+    public static class DirectoryObserver
     {
         private const string OutputFolderName = "Output";
         private const string TestDataFolderName = "TestData";

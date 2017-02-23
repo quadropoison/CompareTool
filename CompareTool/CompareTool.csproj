@@ -46,7 +46,7 @@
     <Compile Include="Comparator.cs" />
     <Compile Include="FileReader.cs" />
     <Compile Include="FileWriter.cs" />
-    <Compile Include="FolderReader.cs" />
+    <Compile Include="DirectoryObserver.cs" />
     <Compile Include="InputCollector.cs" />
     <Compile Include="Extentions.cs" />
     <Compile Include="Program.cs" />

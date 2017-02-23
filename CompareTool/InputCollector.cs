@@ -14,7 +14,7 @@ namespace CompareTool
 
         public static string SetFileName()
         {         
-            var folder = FolderReader.GetTestDataFolderPath();            
+            var folder = DirectoryObserver.GetTestDataFolderPath();            
 
             string fileName = null;            
             int attempt = 0;

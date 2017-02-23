@@ -14,7 +14,7 @@ namespace CompareTool
             int fileNumber = 0;
             string fileExtention = "txt";
             string fileName = $"TestOutput-{fileNumber}.{fileExtention}";
-            string outputPath = $"{FolderReader.GetOutputFolderPath()}\\{fileName}";
+            string outputPath = $"{DirectoryObserver.GetOutputFolderPath()}\\{fileName}";
             var isCreated = false;
 
             while (!isCreated)
@@ -23,7 +23,7 @@ namespace CompareTool
                 {
                     fileNumber++;
                     fileName = $"TestOutput-{fileNumber}.{fileExtention}";
-                    outputPath = $"{FolderReader.GetOutputFolderPath()}\\{fileName}";
+                    outputPath = $"{DirectoryObserver.GetOutputFolderPath()}\\{fileName}";
                 }
                 else
                 {

@@ -6,7 +6,7 @@ namespace CompareTool
     {
         public static string GetFileContentAsText(string filePath)
         {            
-            var fileInfo = FolderReader.TakeOneFileFromTestFolder(filePath);
+            var fileInfo = DirectoryObserver.TakeOneFileFromTestFolder(filePath);
             var fileContentInText = GetFileText(fileInfo.FullName);
             return fileContentInText;
         }
