@@ -4,20 +4,20 @@ namespace CompareTool
 {
     public class ComparatorEventArgs : EventArgs
     {
-        public string Output { get; set; }
+        public bool isSuccess { get; set; }
+
     }
 
     public class Comparator
     {
         public event EventHandler<ComparatorEventArgs> ComparisonSuccessfullyFinished;        
-        public event EventHandler<ComparatorEventArgs> ComparisonUnsuccessfullyFinished;
 
         public void CompareFilesAsText(string fileFirst, string fileSecond)
         {
             if (!CompareTwoObjects(fileFirst, fileSecond))
-                OnComparisonSuccessfullyFinished();
+                OnComparisonSuccessfullyFinished(false);
             else
-                OnComparisonUnsuccessfullyFinished();
+                OnComparisonSuccessfullyFinished(true);
         }
 
         private static bool CompareTwoObjects(object itemExpected, object itemActual)
@@ -25,14 +25,9 @@ namespace CompareTool
             return itemExpected.Equals(itemActual);
         }
 
-        private void OnComparisonSuccessfullyFinished()
+        private void OnComparisonSuccessfullyFinished(bool result)
         {
-            ComparisonSuccessfullyFinished?.Invoke(null, new ComparatorEventArgs());
-        }
-
-        private void OnComparisonUnsuccessfullyFinished()
-        {
-            ComparisonUnsuccessfullyFinished?.Invoke(null, new ComparatorEventArgs());
+            ComparisonSuccessfullyFinished?.Invoke(this, new ComparatorEventArgs() {isSuccess = result});
         }
     }
 }

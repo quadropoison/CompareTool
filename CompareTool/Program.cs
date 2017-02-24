@@ -32,7 +32,6 @@ namespace CompareTool
             
             Comparator comparator = new Comparator();            
             comparator.ComparisonSuccessfullyFinished += OnComparisonSuccessfullyFinished;
-            comparator.ComparisonUnsuccessfullyFinished += OnComparisonUnsuccessfullyFinished;
             
             comparator.CompareFilesAsText(fileFirstData, fileSecondData);
             Console.ReadLine();         

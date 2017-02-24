@@ -46,18 +46,19 @@ namespace CompareTool
             Console.ResetColor();
         }
 
-        public static void OnComparisonSuccessfullyFinished(Object source,  ComparatorEventArgs e)
+        public static void OnComparisonSuccessfullyFinished(Object source, ComparatorEventArgs e)
         {
-            FileWriter.OutputData = "Discrepancy found";
-            ShowDiscrepancyFound();    
-            FileWriter.WriteTxtOutput();        
-        }
+            if (e.isSuccess)
+            {
+                FileWriter.OutputData = "All data match";
+                ShowDataMatch();
+                FileWriter.WriteTxtOutput();
+                return;
+            }
 
-        public static void OnComparisonUnsuccessfullyFinished(Object source, ComparatorEventArgs e)
-        {
-            FileWriter.OutputData = "All data match";
-            ShowDataMatch();
-            FileWriter.WriteTxtOutput();            
+            FileWriter.OutputData = "Discrepancy found";
+            ShowDiscrepancyFound();
+            FileWriter.WriteTxtOutput();
         }
 
         public static void ShowInstructionsWhenNoFilesFound(string fileName)
