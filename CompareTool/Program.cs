@@ -31,7 +31,8 @@ namespace CompareTool
             var fileSecondData = FileReader.GetFileContentAsText(fileSecond);         
             
             Comparator comparator = new Comparator();            
-            comparator.ComparisonSuccessfullyFinished += OnComparisonSuccessfullyFinished;
+            comparator.ComparisonFinished += OnComparisonFinished;
+            comparator.ComparisonFinished += FileWriter.OnComparisonFinished;
             
             comparator.CompareFilesAsText(fileFirstData, fileSecondData);
             Console.ReadLine();         

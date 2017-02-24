@@ -28,7 +28,7 @@ namespace CompareTool
                 if (isfileExist)
                     return fileName;
 
-                Console.WriteLine("{1}There is no such file '{0}' in The Test Folder, try another one{1}", fileName, "\n");
+                ConsoleOutput.ShowInstructionsWhenShouldTypeinAnotherFileName(fileName);
 
                 attempt++;
             }

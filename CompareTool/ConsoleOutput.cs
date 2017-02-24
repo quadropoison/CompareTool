@@ -46,25 +46,28 @@ namespace CompareTool
             Console.ResetColor();
         }
 
-        public static void OnComparisonSuccessfullyFinished(Object source, ComparatorEventArgs e)
+        public static void OnComparisonFinished(Object source, ComparatorEventArgs e)
         {
-            if (e.isSuccess)
+            if (e.IsSuccess)
             {
-                FileWriter.OutputData = "All data match";
                 ShowDataMatch();
-                FileWriter.WriteTxtOutput();
-                return;
+                return;                
             }
 
-            FileWriter.OutputData = "Discrepancy found";
-            ShowDiscrepancyFound();
-            FileWriter.WriteTxtOutput();
+            ShowDiscrepancyFound();           
         }
 
         public static void ShowInstructionsWhenNoFilesFound(string fileName)
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("{1}There is no such file {0} in The Test Folder, try to put this file in appropriate folder and Try again.{1}", fileName, "\n");
+            Console.ResetColor();
+        }
+
+        public static void ShowInstructionsWhenShouldTypeinAnotherFileName(string fileName)
+        {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("{1}There is no such file '{0}' in The Test Folder, try another one{1}", fileName, "\n");
             Console.ResetColor();
         }
     }

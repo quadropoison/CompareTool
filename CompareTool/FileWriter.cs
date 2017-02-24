@@ -35,5 +35,23 @@ namespace CompareTool
             File.WriteAllText(outputPath, OutputData);
             Console.WriteLine("Output saved");            
         }
+
+        public static void WriteTestResult(bool isSuccess)
+        {
+            if (!isSuccess)
+            {
+                OutputData = "Discrepancy found";
+                WriteTxtOutput();
+                return;
+            }
+
+            OutputData = "All data match";
+            WriteTxtOutput();
+        }
+
+        public static void OnComparisonFinished(Object source, ComparatorEventArgs e)
+        {
+           WriteTestResult(e.IsSuccess);
+        }
     }
 }
