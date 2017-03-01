@@ -29,7 +29,7 @@ namespace CompareTool
 
         public static void ShowInstructionsForFileWithNumber(int number)
         {
-            Console.WriteLine("{1}Type in name of the {0} file to compare:{1}", number, "\n");
+            Console.WriteLine("{1}Type in name (or number) of the {0} file to compare:{1}", number, "\n");
         }
 
         public static void ShowDataMatch()
