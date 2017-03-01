@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using static CompareTool.Extentions;
 
 namespace CompareTool
@@ -14,14 +15,23 @@ namespace CompareTool
 
         public static string SetFileName()
         {         
-            var folder = DirectoryObserver.GetTestDataFolderPath();            
-
-            string fileName = null;            
+            var folder = DirectoryObserver.GetTestDataFolderPath();
+                                 
             int attempt = 0;
+
+            string fileName = null;
 
             while (attempt != 3)
             {
-                fileName = Console.ReadLine();                
+                fileName = Console.ReadLine();
+
+                int fileIndex;
+                bool successfullyParsed = int.TryParse(fileName, out fileIndex);
+                if (successfullyParsed)
+                {
+                   fileName = DirectoryObserver.GetFileNameByIndex(fileIndex);
+                }
+
                 var filePath = $"{folder}\\{fileName}";
                 bool isfileExist = IsFileExist(filePath);
 
