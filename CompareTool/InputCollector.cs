@@ -7,9 +7,12 @@ namespace CompareTool
 {
     public static class InputCollector
     {
-        public static List<string> CollectFileNamesToCompare(string fileOne, string fileTwo)
+        public static string FirstFileName { get; set; }
+        public static string SecondFileName { get; set; }
+
+        public static List<string> CollectFileNamesToCompare()
         {
-            List<string> files = new List<string>() { fileOne, fileTwo };
+            List<string> files = new List<string>() { FirstFileName, SecondFileName };
             return files;                      
         }
 

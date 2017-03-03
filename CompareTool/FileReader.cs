@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 
 namespace CompareTool
 {
@@ -19,6 +20,19 @@ namespace CompareTool
                 fileContents = File.ReadAllText(name);
             }
 
+            return fileContents;
+        }
+
+        public static List<string> GetFileTextAsLinesToList(string name)
+
+        {
+            var fileInfo = DirectoryObserver.TakeOneFileFromTestFolder(name);
+            List<string> fileContents = new List<string>();
+            if (File.Exists(fileInfo.FullName))
+            {
+                var temp = File.ReadAllLines(fileInfo.FullName);
+                foreach (var s in temp) fileContents.Add(s);
+            }            
             return fileContents;
         }
     }

@@ -57,6 +57,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="TestData\Sample00.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestData\Sample01.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

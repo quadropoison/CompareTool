@@ -15,11 +15,11 @@ namespace CompareTool
             namesOfAvaliableFiles.ShowToConsoleStringsList();
 
             ShowInstructionsForFileWithNumber(1);
-            var fileFirst = SetFileName();
+            InputCollector.FirstFileName = SetFileName();
             ShowInstructionsForFileWithNumber(2);
-            var fileSecond = SetFileName();
+            InputCollector.SecondFileName = SetFileName();
             
-            var fileBundle = CollectFileNamesToCompare(fileFirst, fileSecond);                                    
+            var fileBundle = CollectFileNamesToCompare();                                    
             Console.WriteLine("{0}Selected files :{0}", "\n");
             Console.ForegroundColor = ConsoleColor.Yellow;                        
             fileBundle.ShowToConsoleStringsList();
@@ -27,14 +27,24 @@ namespace CompareTool
             Console.WriteLine("{0}Press any key to compare ...{0}", "\n");
             Console.ReadLine();
                     
-            var fileFirstData = FileReader.GetFileContentAsText(fileFirst);
-            var fileSecondData = FileReader.GetFileContentAsText(fileSecond);         
+            var fileFirstData = FileReader.GetFileContentAsText(InputCollector.FirstFileName);
+            var fileSecondData = FileReader.GetFileContentAsText(InputCollector.SecondFileName);         
             
             Comparator comparator = new Comparator();            
             comparator.ComparisonFinished += OnComparisonFinished;
-            comparator.ComparisonFinished += FileWriter.OnComparisonFinished;
+            comparator.ComparisonFinished += FileWriter.OnComparisonFinished;   
+                     
+            comparator.CompareFilesAsStrings(fileFirstData, fileSecondData);
+
+            // *
+            Console.WriteLine("{0}Press any key to show differences ...{0}", "\n");
+            Console.ReadLine();
+            var fileFirstList = FileReader.GetFileTextAsLinesToList(InputCollector.FirstFileName);
+            var fileSecondList = FileReader.GetFileTextAsLinesToList(InputCollector.SecondFileName);
+            var diff = comparator.PutDiscrepanciesToList(fileFirstList, fileSecondList);
+            diff.ShowToConsoleStringsList();
+            // *
             
-            comparator.CompareFilesAsText(fileFirstData, fileSecondData);
             Console.ReadLine();         
         }
     }
