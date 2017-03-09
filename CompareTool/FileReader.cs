@@ -32,7 +32,8 @@ namespace CompareTool
             {
                 var temp = File.ReadAllLines(fileInfo.FullName);
                 foreach (var s in temp) fileContents.Add(s);
-            }            
+            }
+                        
             return fileContents;
         }
     }

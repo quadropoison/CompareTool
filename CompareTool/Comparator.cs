@@ -1,30 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 namespace CompareTool
 {
     public class ComparatorEventArgs : EventArgs
     {
         public bool IsSuccess { get; set; }
-
     }
 
-    public class Comparator
+    public class Comparator: IComparator
     {
+        public bool IsEquals { get; set; }
+
         public event EventHandler<ComparatorEventArgs> ComparisonFinished;
 
         public void CompareFilesAsStrings(string fileFirst, string fileSecond)
         {
-            if (!CompareTwoObjects(fileFirst, fileSecond))
-                OnComparisonFinished(false);
-            else
-                OnComparisonFinished(true);
+                CompareTwoObjects(fileFirst, fileSecond);
+                OnComparisonFinished(IsEquals);
         }
 
-        private static bool CompareTwoObjects(object itemExpected, object itemActual)
+        public void CompareTwoObjects(object itemExpected, object itemActual)
         {
-            return itemExpected.Equals(itemActual);
+            IsEquals = itemExpected.Equals(itemActual);
         }
 
         public List<string> PutDiscrepanciesToList(List<string> fileFirst, List<string> fileSecond)
@@ -60,5 +60,12 @@ namespace CompareTool
         {
             ComparisonFinished?.Invoke(this, new ComparatorEventArgs() {IsSuccess = result});
         }
+
+    }
+
+    public interface IComparator
+    {
+        bool IsEquals { get; set; }
+        void CompareTwoObjects(object itemExpected, object itemActual); 
     }
 }
