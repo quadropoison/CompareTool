@@ -13,12 +13,12 @@ namespace CompareTool
 
         private static readonly string CurrentDirectory = Directory.GetCurrentDirectory();
 
-        public static List<string> NamesOfAvaliableFiles = GetNamesOfAvaliableFiles();
+        public static List<string> NamesOfAvailableFiles = GetNamesOfAvaliableFiles();
 
         private static List<string> GetNamesOfAvaliableFiles()
         {
-            var avaliableFilesInfo = TakeAllFilesFromTestDataFolder();
-            return NamesOfAvaliableFiles = GetAllFileNames(avaliableFilesInfo);
+            var availableFilesInfo = TakeAllFilesFromTestDataFolder();
+            return NamesOfAvailableFiles = GetAllFileNames(availableFilesInfo);
         }
 
         public static string GetOutputFolderPath()
@@ -74,7 +74,7 @@ namespace CompareTool
             int key = 1;
             Dictionary<int, string> result = new Dictionary<int, string>();
 
-            foreach (var item in NamesOfAvaliableFiles)
+            foreach (var item in NamesOfAvailableFiles)
             {
                 if (!result.ContainsKey(key))
                 {

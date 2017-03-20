@@ -17,14 +17,16 @@ namespace CompareTool
             {
                 if (data.Count < 2)
                 {
-                    Console.WriteLine($"{item}");
+                    Console.WriteLine($"\n{item}");
                 }
                 else
                 {
-                    Console.WriteLine($"{row}. {item}");
+                    Console.WriteLine($"\n{row}. {item}");                    
                     row++;
-                }
+                }                
             }
+
+            Console.WriteLine();
         }
 
         public static void ShowInstructionsForFileWithNumber(int number)
