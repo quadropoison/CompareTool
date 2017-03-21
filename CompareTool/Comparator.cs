@@ -5,16 +5,13 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace CompareTool
 {
-    public class ComparatorEventArgs : EventArgs
-    {
-        public bool IsSuccess { get; set; }
-    }
-
     public class Comparator: IComparator
     {
         public bool IsEquals { get; set; }
 
         public event EventHandler<ComparatorEventArgs> ComparisonFinished;
+
+        public event EventHandler<ComparatorEventArgs> DiscrepanciesFound;
 
         public void CompareFilesAsStrings(string fileFirst, string fileSecond)
         {
@@ -30,7 +27,7 @@ namespace CompareTool
         public List<string> PutDiscrepanciesToList(List<string> fileFirst, List<string> fileSecond)
         {
             var result = GetUniqueRowsFromFilesData(fileFirst, fileSecond);
-
+            OnDiscrepanciesFound(result);
             return result;
         }
 
@@ -61,11 +58,9 @@ namespace CompareTool
             ComparisonFinished?.Invoke(this, new ComparatorEventArgs() {IsSuccess = result});
         }
 
-    }
-
-    public interface IComparator
-    {
-        bool IsEquals { get; set; }
-        void CompareTwoObjects(object itemExpected, object itemActual); 
+        private void OnDiscrepanciesFound(List<string> result)
+        {
+            DiscrepanciesFound?.Invoke(this, new ComparatorEventArgs() { Dis = result });
+        }
     }
 }

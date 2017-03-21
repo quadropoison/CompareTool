@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 
@@ -7,7 +9,7 @@ namespace CompareTool
 {
     public static class FileWriter
     {
-        public static string OutputData { get; set; }
+        public static List<string> OutputData { get; set; }
 
         public static void WriteTxtOutput()
         {
@@ -31,27 +33,63 @@ namespace CompareTool
                 }                
             }
 
-            Console.WriteLine($"File {fileName} created");                
-            File.WriteAllText(outputPath, OutputData);
+            Console.WriteLine($"File {fileName} created");
+
+            using (StreamWriter outputFile = new StreamWriter(outputPath, true))
+            {
+                foreach (var line in OutputData)
+                {
+                    outputFile.WriteLine(line);
+                }                
+            }
+
+            ////File.WriteAllText(outputPath, OutputData);
             Console.WriteLine("Output saved");            
         }
 
         public static void WriteTestResult(bool isSuccess)
         {
+            var ls = new List<string>();
+
             if (!isSuccess)
             {
-                OutputData = "Discrepancy found";
+                ls.Add("Discrepancy found");
+                OutputData = ls;
                 WriteTxtOutput();
                 return;
             }
 
-            OutputData = "All data match";
+            ls.Add("All data match");
+            OutputData = ls; 
             WriteTxtOutput();
+        }
+
+        public static void WriteTestResultLine(List<string> dis)
+        {
+            var data = dis;
+
+            if (data.Count != 0)
+            {
+                foreach (var line in data)
+                {
+                    OutputData.Add(line);
+                }
+
+                WriteTxtOutput();
+                return;
+            }
+            
+            Console.WriteLine("No Discrepancies found");           
         }
 
         public static void OnComparisonFinished(Object source, ComparatorEventArgs e)
         {
            WriteTestResult(e.IsSuccess);
+        }
+
+        public static void OnDiscrepanciesFound(Object source, ComparatorEventArgs e)
+        {
+            WriteTestResultLine(e.Dis);
         }
     }
 }

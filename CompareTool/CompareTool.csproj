@@ -44,9 +44,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Comparator.cs" />
+    <Compile Include="ComparatorEventArgs.cs" />
     <Compile Include="FileReader.cs" />
     <Compile Include="FileWriter.cs" />
     <Compile Include="DirectoryObserver.cs" />
+    <Compile Include="IComparator.cs" />
     <Compile Include="InputCollector.cs" />
     <Compile Include="Extentions.cs" />
     <Compile Include="Menu.cs" />

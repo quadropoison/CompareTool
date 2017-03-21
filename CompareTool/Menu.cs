@@ -60,17 +60,25 @@ namespace CompareTool
             var fileFirstData = FileReader.GetFileContentAsText(InputCollector.FirstFileName);
             var fileSecondData = FileReader.GetFileContentAsText(InputCollector.SecondFileName);
 
+            var fileFirstList = FileReader.GetFileTextAsLinesToList(InputCollector.FirstFileName);
+            var fileSecondList = FileReader.GetFileTextAsLinesToList(InputCollector.SecondFileName);
+
             comparator.ComparisonFinished += ConsoleOutput.OnComparisonFinished;
             comparator.ComparisonFinished += FileWriter.OnComparisonFinished;
+            comparator.DiscrepanciesFound += FileWriter.OnDiscrepanciesFound;            
 
             comparator.CompareFilesAsStrings(fileFirstData, fileSecondData);
+
+            comparator.PutDiscrepanciesToList(fileFirstList, fileSecondList);
         }
 
         private static void ShowDiscrepancies(Comparator comparator)
         {
             var fileFirstList = FileReader.GetFileTextAsLinesToList(InputCollector.FirstFileName);
             var fileSecondList = FileReader.GetFileTextAsLinesToList(InputCollector.SecondFileName);
+
             var diff = comparator.PutDiscrepanciesToList(fileFirstList, fileSecondList);
+
             diff.ShowToConsoleStringsList();
         }
 
