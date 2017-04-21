@@ -6,6 +6,8 @@ namespace CompareTool
     {
         private static string Menuchoice { get; set; }
 
+        private static bool IsDataSelected { get; set; }
+
         private static bool IsMenuVisible { get; set; }
 
         public static void MenuProcess()
@@ -17,6 +19,9 @@ namespace CompareTool
                 if (IsMenuVisible == true)
                 {
                     Console.Clear();
+
+                    CheckIfDataSelectedToCompare();
+
                     Console.WriteLine("> MENU <\n");
                     Console.WriteLine("*** Please enter the number that you want to do:\n");
                     Console.WriteLine("1. Show avaiable files list\n");
@@ -69,6 +74,22 @@ namespace CompareTool
                     }
                 }
             }
+        }
+
+        private static void CheckIfDataSelectedToCompare()
+        {
+            if (IsDataSelected == true)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+            }
+
+            Console.WriteLine($"Data selected : {IsDataSelected}\n");                
+
+            Console.ResetColor();
         }
 
         private static void ShowUserChoice(string choice)
@@ -158,6 +179,8 @@ namespace CompareTool
             InputCollector.SecondFileName = InputCollector.SetFileName();
 
             MakeMenuVisible();
+
+            IsDataSelected = true;
         }
 
         private static void ShowAvailableFiles()

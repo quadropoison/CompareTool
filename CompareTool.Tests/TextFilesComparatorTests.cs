@@ -10,13 +10,12 @@ namespace CompareTool.Tests
         [TestMethod]
         public void CompareTwoStrings_ShouldReturn_AssertTrue()
         {
-            bool compareResult = false;
             var dataOne = "Test string ZeroZeroOne";
 
             TextFilesComparator comparator = new TextFilesComparator();
            
             comparator.CompareFilesAsStrings(dataOne, dataOne);
-            compareResult = comparator.IsEquals;
+            var compareResult = comparator.IsEquals;
 
             Assert.IsTrue(compareResult);
         }
@@ -24,14 +23,13 @@ namespace CompareTool.Tests
         [TestMethod]
         public void CompareTwoStrings_ShouldReturn_AssertFalse()
         {
-            bool compareResult = false;
             var dataOne = "Test string ZeroZeroOne";
             var dataTwo = "Test string ZeroZeroTwo";
 
             TextFilesComparator comparator = new TextFilesComparator();
            
             comparator.CompareFilesAsStrings(dataOne, dataTwo);
-            compareResult = comparator.IsEquals;
+            var compareResult = comparator.IsEquals;
 
             Assert.IsFalse(compareResult);
         }
