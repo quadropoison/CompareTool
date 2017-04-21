@@ -44,7 +44,7 @@ namespace CompareTool
             }
 
             ////File.WriteAllText(outputPath, OutputData);
-            Console.WriteLine("Output saved");            
+            Console.WriteLine("Output saved\n");            
         }
 
         public static void WriteTestResult(bool isSuccess)
@@ -55,13 +55,13 @@ namespace CompareTool
             {
                 ls.Add("Discrepancy found");
                 OutputData = ls;
-                WriteTxtOutput();
+                ////WriteTxtOutput();
                 return;
             }
 
             ls.Add("All data match");
             OutputData = ls; 
-            WriteTxtOutput();
+            ////WriteTxtOutput();
         }
 
         public static void WriteTestResultLine(List<string> dis)

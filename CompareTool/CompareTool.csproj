@@ -43,7 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Comparator.cs" />
+    <Compile Include="TextFilesComparator.cs" />
     <Compile Include="ComparatorEventArgs.cs" />
     <Compile Include="FileReader.cs" />
     <Compile Include="FileWriter.cs" />

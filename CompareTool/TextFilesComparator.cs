@@ -5,7 +5,7 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace CompareTool
 {
-    public class Comparator: IComparator
+    public class TextFilesComparator: IComparator
     {
         public bool IsEquals { get; set; }
 

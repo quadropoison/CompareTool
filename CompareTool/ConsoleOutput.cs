@@ -26,7 +26,7 @@ namespace CompareTool
                 }                
             }
 
-            Console.WriteLine();
+            Console.WriteLine("\n");
         }
 
         public static void ShowInstructionsForFileWithNumber(int number)
@@ -37,14 +37,14 @@ namespace CompareTool
         public static void ShowDataMatch()
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("All data match");
+            Console.WriteLine("\nAll data match");
             Console.ResetColor();
         }
 
         public static void ShowDiscrepancyFound()
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("Discrepancy found");
+            Console.WriteLine("\nDiscrepancy found");
             Console.ResetColor();
         }
 

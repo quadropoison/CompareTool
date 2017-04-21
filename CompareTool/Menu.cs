@@ -6,56 +6,109 @@ namespace CompareTool
     {
         private static string Menuchoice { get; set; }
 
+        private static bool IsMenuVisible { get; set; }
+
         public static void MenuProcess()
         {
+            IsMenuVisible = true;
+
             while (Menuchoice != "9")
             {
-                Console.WriteLine("> MENU <\n");
-                Console.WriteLine("*** Please enter the number that you want to do:\n");
-                Console.WriteLine("1. Show avaiable files list\n");
-                Console.WriteLine("2. Select files\n");
-                Console.WriteLine("3. Show selected file names\n");
-                Console.WriteLine("4. Compare files\n");
-                Console.WriteLine("5. Show Discrepancies\n");
-                Console.WriteLine("9. \"Quit\". Exit\n");
-
-                Menuchoice = Console.ReadLine();
-
-                Comparator comparator = new Comparator();
-
-                switch (Menuchoice)
+                if (IsMenuVisible == true)
                 {
-                    case "1":
-                        ShowAvailableFiles();
-                        break;
+                    Console.Clear();
+                    Console.WriteLine("> MENU <\n");
+                    Console.WriteLine("*** Please enter the number that you want to do:\n");
+                    Console.WriteLine("1. Show avaiable files list\n");
+                    Console.WriteLine("2. Select files\n");
+                    Console.WriteLine("3. Show selected file names\n");
+                    Console.WriteLine("4. Compare files\n");
+                    Console.WriteLine("5. Show Discrepancies\n");
+                    Console.WriteLine("9. \"Quit\". Exit\n");
 
-                    case "2":
-                        SetFilesForComparing();
-                        break;
+                    Menuchoice = Console.ReadLine();
 
-                    case "3":
-                        ShowSelectedFiles();
-                        break;
+                    TextFilesComparator textFilesComparator = new TextFilesComparator();
 
-                    case "4":
-                        CompareFiles(comparator);
-                        break;
+                    switch (Menuchoice)
+                    {
+                        case "1":
+                            ShowUserChoice(Menuchoice);
+                            ShowAvailableFiles();
+                            break;
 
-                    case "5":
-                        ShowDiscrepancies(comparator);
-                        break;
+                        case "2":
+                            ShowUserChoice(Menuchoice);
+                            SetFilesForComparing();
+                            break;
 
-                    case "9":
-                        break;
+                        case "3":
+                            ShowUserChoice(Menuchoice);
+                            ShowSelectedFiles();
+                            break;
 
-                    default:
-                        Console.WriteLine("Sorry, invalid selection");
-                        break;
+                        case "4":
+                            ShowUserChoice(Menuchoice);
+                            CompareFiles(textFilesComparator);
+                            break;
+
+                        case "5":
+                            ShowUserChoice(Menuchoice);
+                            ShowDiscrepancies(textFilesComparator);
+                            break;
+
+                        case "9":
+                            break;
+
+                        default:
+                            Console.ForegroundColor = ConsoleColor.Magenta;
+                            Console.WriteLine("Sorry, invalid selection\n");                            
+                            Console.ResetColor();
+                            Console.WriteLine("Press any key to continue\n");
+                            break;
+                    }
                 }
             }
         }
 
-        private static void CompareFiles(Comparator comparator)
+        private static void ShowUserChoice(string choice)
+        {
+            IsMenuVisible = false;
+
+            string text = string.Empty;
+
+            switch (choice)
+            {
+                case "1":
+                    text = "Show available files list";
+                    break;
+
+                case "2":
+                    text = "Select files";
+                    break;
+
+                case "3":
+                    text = "Show selected file names";
+                    break;
+
+                case "4":
+                    text = "Compare files";
+                    break;
+
+                case "5":
+                    text = "Show Discrepancies";
+                    break;
+
+                default:
+                    break;
+            }
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"Your choice is \"{text}\"");
+            Console.ResetColor();
+        }
+
+        private static void CompareFiles(TextFilesComparator textFilesComparator)
         {
             var fileFirstData = FileReader.GetFileContentAsText(InputCollector.FirstFileName);
             var fileSecondData = FileReader.GetFileContentAsText(InputCollector.SecondFileName);
@@ -63,23 +116,27 @@ namespace CompareTool
             var fileFirstList = FileReader.GetFileTextAsLinesToList(InputCollector.FirstFileName);
             var fileSecondList = FileReader.GetFileTextAsLinesToList(InputCollector.SecondFileName);
 
-            comparator.ComparisonFinished += ConsoleOutput.OnComparisonFinished;
-            comparator.ComparisonFinished += FileWriter.OnComparisonFinished;
-            comparator.DiscrepanciesFound += FileWriter.OnDiscrepanciesFound;            
+            textFilesComparator.ComparisonFinished += ConsoleOutput.OnComparisonFinished;
+            textFilesComparator.ComparisonFinished += FileWriter.OnComparisonFinished;
+            textFilesComparator.DiscrepanciesFound += FileWriter.OnDiscrepanciesFound;
 
-            comparator.CompareFilesAsStrings(fileFirstData, fileSecondData);
+            textFilesComparator.CompareFilesAsStrings(fileFirstData, fileSecondData);
 
-            comparator.PutDiscrepanciesToList(fileFirstList, fileSecondList);
+            textFilesComparator.PutDiscrepanciesToList(fileFirstList, fileSecondList);
+
+            MakeMenuVisible();
         }
 
-        private static void ShowDiscrepancies(Comparator comparator)
+        private static void ShowDiscrepancies(TextFilesComparator textFilesComparator)
         {
             var fileFirstList = FileReader.GetFileTextAsLinesToList(InputCollector.FirstFileName);
             var fileSecondList = FileReader.GetFileTextAsLinesToList(InputCollector.SecondFileName);
 
-            var diff = comparator.PutDiscrepanciesToList(fileFirstList, fileSecondList);
+            var diff = textFilesComparator.PutDiscrepanciesToList(fileFirstList, fileSecondList);
 
             diff.ShowToConsoleStringsList();
+
+            MakeMenuVisible();
         }
 
         private static void ShowSelectedFiles()
@@ -89,6 +146,8 @@ namespace CompareTool
             Console.ForegroundColor = ConsoleColor.Yellow;
             fileBundle.ShowToConsoleStringsList();
             Console.ResetColor();
+
+            MakeMenuVisible();
         }
 
         private static void SetFilesForComparing()
@@ -97,6 +156,8 @@ namespace CompareTool
             InputCollector.FirstFileName = InputCollector.SetFileName();
             ConsoleOutput.ShowInstructionsForFileWithNumber(2);
             InputCollector.SecondFileName = InputCollector.SetFileName();
+
+            MakeMenuVisible();
         }
 
         private static void ShowAvailableFiles()
@@ -104,6 +165,21 @@ namespace CompareTool
             var availableFilesInfo = DirectoryObserver.TakeAllFilesFromTestDataFolder();
             var namesOfAvailableFiles = DirectoryObserver.GetAllFileNames(availableFilesInfo);
             namesOfAvailableFiles.ShowToConsoleStringsList();
+
+            MakeMenuVisible();
+        }
+
+        private static void MakeMenuVisible()
+        {
+            ConsoleKeyInfo k;
+
+            do
+            {
+              Console.WriteLine("Press Enter to continue\n");
+              k = Console.ReadKey();
+            } while (k.Key != ConsoleKey.Enter);
+                   
+            IsMenuVisible = true;
         }
     }
 }
