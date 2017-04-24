@@ -8,6 +8,8 @@ namespace CompareTool
 
         private static bool IsDataSelected { get; set; }
 
+        private static bool IsDataCompared { get; set; }
+
         private static bool IsMenuVisible { get; set; }
 
         public static void MenuProcess()
@@ -18,10 +20,8 @@ namespace CompareTool
             {
                 if (IsMenuVisible == true)
                 {
-                    Console.Clear();
-
-                    CheckIfDataSelectedToCompare();
-
+                    Console.WriteLine("- - > Compare Tool v. 0.1 < - -");
+                    Console.WriteLine(" ");
                     Console.WriteLine("> MENU <\n");
                     Console.WriteLine("*** Please enter the number that you want to do:\n");
                     Console.WriteLine("1. Show avaiable files list\n");
@@ -30,6 +30,9 @@ namespace CompareTool
                     Console.WriteLine("4. Compare files\n");
                     Console.WriteLine("5. Show Discrepancies\n");
                     Console.WriteLine("9. \"Quit\". Exit\n");
+                    Console.WriteLine("- - - - - - - - - - - - - - - -");
+                    CheckIfDataSelectedToCompare();
+                    Console.WriteLine("- - - - - - - - - - - - - - - -");
 
                     Menuchoice = Console.ReadLine();
 
@@ -78,16 +81,20 @@ namespace CompareTool
 
         private static void CheckIfDataSelectedToCompare()
         {
+            var dataSelected = string.Empty;
+
             if (IsDataSelected == true)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
+                dataSelected = "Yes";
             }
             else
             {
                 Console.ForegroundColor = ConsoleColor.Red;
+                dataSelected = "No";
             }
 
-            Console.WriteLine($"Data selected : {IsDataSelected}\n");                
+            Console.WriteLine($"Data selected : {dataSelected}\n");                
 
             Console.ResetColor();
         }
@@ -131,11 +138,23 @@ namespace CompareTool
 
         private static void CompareFiles(TextFilesComparator textFilesComparator)
         {
-            var fileFirstData = FileReader.GetFileContentAsText(InputCollector.FirstFileName);
-            var fileSecondData = FileReader.GetFileContentAsText(InputCollector.SecondFileName);
+            string fileFirst = InputCollector.FirstFileName;
+            string fileSecond = InputCollector.SecondFileName;
 
-            var fileFirstList = FileReader.GetFileTextAsLinesToList(InputCollector.FirstFileName);
-            var fileSecondList = FileReader.GetFileTextAsLinesToList(InputCollector.SecondFileName);
+            if (fileFirst == null || fileSecond == null)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;                
+                Console.WriteLine("\nPlease select at least two files to start comparing\n");
+                Console.ResetColor();
+                MakeMenuVisible();
+                return;
+            }
+
+            var fileFirstData = FileReader.GetFileContentAsText(fileFirst);
+            var fileSecondData = FileReader.GetFileContentAsText(fileSecond);
+
+            var fileFirstList = FileReader.GetFileTextAsLinesToList(fileFirst);
+            var fileSecondList = FileReader.GetFileTextAsLinesToList(fileSecond);
 
             textFilesComparator.ComparisonFinished += ConsoleOutput.OnComparisonFinished;
             textFilesComparator.ComparisonFinished += FileWriter.OnComparisonFinished;
@@ -145,11 +164,22 @@ namespace CompareTool
 
             textFilesComparator.PutDiscrepanciesToList(fileFirstList, fileSecondList);
 
+            IsDataCompared = true;
+
             MakeMenuVisible();
         }
 
         private static void ShowDiscrepancies(TextFilesComparator textFilesComparator)
         {
+            if (!IsDataCompared)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nData was not compared\n");
+                Console.ResetColor();
+                MakeMenuVisible();
+                return;
+            }
+                
             var fileFirstList = FileReader.GetFileTextAsLinesToList(InputCollector.FirstFileName);
             var fileSecondList = FileReader.GetFileTextAsLinesToList(InputCollector.SecondFileName);
 
@@ -203,6 +233,8 @@ namespace CompareTool
             } while (k.Key != ConsoleKey.Enter);
                    
             IsMenuVisible = true;
+
+            Console.Clear();
         }
     }
 }
