@@ -31,7 +31,7 @@ namespace CompareTool
                     Console.WriteLine("5. Show Discrepancies\n");
                     Console.WriteLine("9. \"Quit\". Exit\n");
                     Console.WriteLine("- - - - - - - - - - - - - - - -");
-                    CheckIfDataSelectedToCompare();
+                    CheckIfDataReadyToCompare();
                     Console.WriteLine("- - - - - - - - - - - - - - - -");
 
                     Menuchoice = Console.ReadLine();
@@ -69,17 +69,17 @@ namespace CompareTool
                             break;
 
                         default:
-                            Console.ForegroundColor = ConsoleColor.Magenta;
+                            Console.ForegroundColor = ConsoleColor.Cyan;
                             Console.WriteLine("Sorry, invalid selection\n");                            
                             Console.ResetColor();
-                            Console.WriteLine("Press any key to continue\n");
+                            MakeMenuVisible();
                             break;
                     }
                 }
             }
         }
 
-        private static void CheckIfDataSelectedToCompare()
+        private static void CheckIfDataReadyToCompare()
         {
             var dataSelected = string.Empty;
 
@@ -132,6 +132,7 @@ namespace CompareTool
             }
 
             Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.SetCursorPosition(0, Console.CursorTop - 1);
             Console.WriteLine($"Your choice is \"{text}\"");
             Console.ResetColor();
         }
@@ -143,7 +144,8 @@ namespace CompareTool
 
             if (fileFirst == null || fileSecond == null)
             {
-                Console.ForegroundColor = ConsoleColor.Red;                
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
                 Console.WriteLine("\nPlease select at least two files to start comparing\n");
                 Console.ResetColor();
                 MakeMenuVisible();
@@ -173,7 +175,7 @@ namespace CompareTool
         {
             if (!IsDataCompared)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
+                Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine("\nData was not compared\n");
                 Console.ResetColor();
                 MakeMenuVisible();
@@ -207,6 +209,14 @@ namespace CompareTool
             InputCollector.FirstFileName = InputCollector.SetFileName();
             ConsoleOutput.ShowInstructionsForFileWithNumber(2);
             InputCollector.SecondFileName = InputCollector.SetFileName();
+            Console.WriteLine();
+
+            if (InputCollector.FirstFileName == null || InputCollector.SecondFileName == null)
+            {
+                MakeMenuVisible();
+                IsDataSelected = false;
+                return;
+            }
 
             MakeMenuVisible();
 
@@ -224,16 +234,21 @@ namespace CompareTool
 
         private static void MakeMenuVisible()
         {
-            ConsoleKeyInfo k;
+            ConsoleKeyInfo keyInfo;
 
             do
             {
               Console.WriteLine("Press Enter to continue\n");
-              k = Console.ReadKey();
-            } while (k.Key != ConsoleKey.Enter);
+              keyInfo = Console.ReadKey();
+
+                if (keyInfo.Key != ConsoleKey.Enter)
+                {
+                    Console.SetCursorPosition(0, Console.CursorTop);
+                }
+
+            } while (keyInfo.Key != ConsoleKey.Enter);
                    
             IsMenuVisible = true;
-
             Console.Clear();
         }
     }
