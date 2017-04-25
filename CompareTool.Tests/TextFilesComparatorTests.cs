@@ -65,5 +65,26 @@ namespace CompareTool.Tests
             Assert.IsTrue(result != null);
             Assert.IsTrue(result.Contains("one"));
         }
+
+        [TestMethod]
+        public void GetDiscrepanciesFromFilesData_ShouldReturn_CorrectFileNameForEachUniqueDataRow()
+        {
+            List<string> firstListWithDataRows = new List<string> { "zero", "zero", "one" };
+            List<string> secondListWithDataRows = new List<string> { "zero", "zero", "three" };
+
+            InputCollector.FirstFileName = "fileNameForTest01";
+            InputCollector.SecondFileName = "fileNameForTest02";
+
+            TextFilesComparator comparator = new TextFilesComparator();
+
+            List<string> resultList = comparator.PutDiscrepanciesToList(firstListWithDataRows, secondListWithDataRows);
+
+            var resultWithFirstFileName = resultList[0];
+            var resultWithSecondFileName = resultList[1];
+
+            Assert.IsTrue(resultWithFirstFileName != null && resultWithSecondFileName != null);            
+            Assert.IsTrue(resultWithFirstFileName == "one || [fileNameForTest01]");
+            Assert.IsTrue(resultWithSecondFileName == "three || [fileNameForTest02]");
+        }
     }
 }
