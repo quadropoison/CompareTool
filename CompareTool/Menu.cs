@@ -200,6 +200,11 @@ namespace CompareTool
             fileBundle.ShowToConsoleStringsList();
             Console.ResetColor();
 
+            Console.SetCursorPosition(0, Console.CursorTop - 1);            
+            Console.WriteLine("Press R to reset selected files or any other key to confirm");
+
+            ResetSelectedFiles();
+
             MakeMenuVisible();
         }
 
@@ -238,6 +243,7 @@ namespace CompareTool
 
             do
             {
+              Console.SetCursorPosition(0, Console.CursorTop);
               Console.WriteLine("Press Enter to continue\n");
               keyInfo = Console.ReadKey();
 
@@ -250,6 +256,29 @@ namespace CompareTool
                    
             IsMenuVisible = true;
             Console.Clear();
+        }
+
+        private static void ResetSelectedFiles()
+        {            
+            ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+   
+            if (keyInfo.Key == ConsoleKey.R)
+            {
+                InputCollector.FirstFileName = null;
+                InputCollector.SecondFileName = null;
+                IsDataSelected = false;                
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.SetCursorPosition(0, Console.CursorTop);
+                Console.WriteLine("\nFiles selection state reseted successfully\n");               
+                Console.ResetColor();
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.SetCursorPosition(0, Console.CursorTop);
+                Console.WriteLine("\nSelected files were confirmed successfully\n");
+                Console.ResetColor();
+            }
         }
     }
 }
