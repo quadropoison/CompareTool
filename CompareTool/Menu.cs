@@ -6,8 +6,6 @@ namespace CompareTool
     {
         private static string Menuchoice { get; set; }
 
-        private static bool IsDataSelected { get; set; }
-
         private static bool IsDataCompared { get; set; }
 
         private static bool IsMenuVisible { get; set; }
@@ -80,22 +78,20 @@ namespace CompareTool
         }
 
         private static void CheckIfDataReadyToCompare()
-        {
-            var dataSelected = string.Empty;
+        {    
+            FileWriter.ReadDataFromFileInIsolatedStorage();
 
-            if (IsDataSelected == true)
+            if (FileWriter.IsDataSelected == true)
             {
-                Console.ForegroundColor = ConsoleColor.Green;
-                dataSelected = "Yes";
+                Console.ForegroundColor = ConsoleColor.Green;              
             }
             else
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                dataSelected = "No";
+                Console.ForegroundColor = ConsoleColor.Red;            
             }
 
-            Console.WriteLine($"Data selected : {dataSelected}\n");                
-
+            Console.WriteLine($"Data selected : {FileWriter.DataSelectionStatus}\n");
+            
             Console.ResetColor();
         }
 
@@ -219,13 +215,15 @@ namespace CompareTool
             if (InputCollector.FirstFileName == null || InputCollector.SecondFileName == null)
             {
                 MakeMenuVisible();
-                IsDataSelected = false;
+                FileWriter.IsDataSelected = false;
                 return;
             }
 
+            FileWriter.WriteDataToFileInIsolatedStorage(FileWriter.DataSelectionStatus = "Yes");
+
             MakeMenuVisible();
 
-            IsDataSelected = true;
+            FileWriter.IsDataSelected = true;            
         }
 
         private static void ShowAvailableFiles()
@@ -266,11 +264,12 @@ namespace CompareTool
             {
                 InputCollector.FirstFileName = null;
                 InputCollector.SecondFileName = null;
-                IsDataSelected = false;                
+                FileWriter.IsDataSelected = false;                
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.SetCursorPosition(0, Console.CursorTop);
                 Console.WriteLine("\nFiles selection state reseted successfully\n");               
                 Console.ResetColor();
+                FileWriter.WriteDataToFileInIsolatedStorage(FileWriter.DataSelectionStatus = "No");
             }
             else
             {

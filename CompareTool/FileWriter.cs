@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.IsolatedStorage;
+using System.ComponentModel;
 
 namespace CompareTool
 {
     public static class FileWriter
     {
+        public static string DataSelectionStatus { get; set; }
+        public static bool IsDataSelected { get; set; }
         public static List<string> OutputData { get; set; }
-
         public static void WriteTxtOutput()
         {
             int fileNumber = 0;
@@ -77,6 +80,80 @@ namespace CompareTool
             }
             
             Console.WriteLine("No Discrepancies found");           
+        }
+
+        public static void WriteDataToFileInIsolatedStorage(object data)
+        {
+            IsolatedStorageFile isolatedFile = IsolatedStorageFile.GetUserStoreForAssembly();
+
+            using (IsolatedStorageFileStream stream = new IsolatedStorageFileStream("CompareToolStatusData", FileMode.Create, isolatedFile))
+            {
+                using (StreamWriter sw = new StreamWriter(stream))
+                {                    
+                    sw.WriteLine(data.ToString());
+                }
+            }
+
+            using (IsolatedStorageFileStream stream = new IsolatedStorageFileStream("CompareToolFilesList", FileMode.Create, isolatedFile))
+            {
+                using (StreamWriter sw = new StreamWriter(stream))
+                {
+                    List<string> fileBundle = InputCollector.CollectFileNamesToCompare();
+                    foreach (string file in fileBundle)
+                    {
+                        sw.WriteLine(file);
+                    }                    
+                }
+            }
+        }
+
+        public static void ReadDataFromFileInIsolatedStorage()
+        {
+            IsolatedStorageFile isolatedFile = IsolatedStorageFile.GetUserStoreForAssembly();
+
+            using (IsolatedStorageFileStream stream = new IsolatedStorageFileStream("CompareToolStatusData", FileMode.OpenOrCreate, isolatedFile))
+            {
+                using (StreamReader sr = new StreamReader(stream))
+                {
+                    var data = sr.ReadLine();
+
+                    if (data != string.Empty)
+                    {
+                        DataSelectionStatus = data;
+
+                        if (DataSelectionStatus == "Yes")
+                            IsDataSelected = true;
+                        else
+                            IsDataSelected = false;
+                    }
+                    else
+                    {                        
+                        DataSelectionStatus = string.Empty;
+
+                        if (DataSelectionStatus == "Yes")
+                            IsDataSelected = true;
+                        else
+                            IsDataSelected = false;
+                    }
+                }
+            }
+
+            using (IsolatedStorageFileStream stream = new IsolatedStorageFileStream("CompareToolFilesList", FileMode.OpenOrCreate, isolatedFile))
+            {
+                using (StreamReader sr = new StreamReader(stream))
+                {
+                    var fileName = sr.ReadLine();
+                    var itemsList = new List<string>();
+                    while (fileName != null)
+                    {
+                        itemsList.Add(fileName);
+                        fileName = sr.ReadLine();
+                    }
+
+                    InputCollector.FirstFileName = itemsList[0];
+                    InputCollector.SecondFileName = itemsList[1];
+                }
+            }
         }
 
         public static void OnComparisonFinished(Object source, ComparatorEventArgs e)
