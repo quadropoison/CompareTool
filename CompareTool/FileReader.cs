@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.IO.IsolatedStorage;
 
 namespace CompareTool
 {
@@ -35,6 +36,55 @@ namespace CompareTool
             }
                         
             return fileContents;
+        }
+
+        public static void ReadDataFromFileInIsolatedStorage()
+        {
+            IsolatedStorageFile isolatedFile = IsolatedStorageFile.GetUserStoreForAssembly();
+
+            using (IsolatedStorageFileStream stream = new IsolatedStorageFileStream("CompareToolStatusData", FileMode.OpenOrCreate, isolatedFile))
+            {
+                using (StreamReader sr = new StreamReader(stream))
+                {
+                    var data = sr.ReadLine();
+
+                    if (data != string.Empty)
+                    {
+                        FileWriter.DataSelectionStatus = data;
+
+                        if (FileWriter.DataSelectionStatus == "Yes")
+                            FileWriter.IsDataSelected = true;
+                        else
+                            FileWriter.IsDataSelected = false;
+                    }
+                    else
+                    {
+                        FileWriter.DataSelectionStatus = string.Empty;
+
+                        if (FileWriter.DataSelectionStatus == "Yes")
+                            FileWriter.IsDataSelected = true;
+                        else
+                            FileWriter.IsDataSelected = false;
+                    }
+                }
+            }
+
+            using (IsolatedStorageFileStream stream = new IsolatedStorageFileStream("CompareToolFilesList", FileMode.OpenOrCreate, isolatedFile))
+            {
+                using (StreamReader sr = new StreamReader(stream))
+                {
+                    var fileName = sr.ReadLine();
+                    var itemsList = new List<string>();
+                    while (fileName != null)
+                    {
+                        itemsList.Add(fileName);
+                        fileName = sr.ReadLine();
+                    }
+
+                    InputCollector.FirstFileName = itemsList[0];
+                    InputCollector.SecondFileName = itemsList[1];
+                }
+            }
         }
     }
 }

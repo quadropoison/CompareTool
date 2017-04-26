@@ -79,7 +79,7 @@ namespace CompareTool
 
         private static void CheckIfDataReadyToCompare()
         {    
-            FileWriter.ReadDataFromFileInIsolatedStorage();
+            FileReader.ReadDataFromFileInIsolatedStorage();
 
             if (FileWriter.IsDataSelected == true)
             {

@@ -107,55 +107,6 @@ namespace CompareTool
             }
         }
 
-        public static void ReadDataFromFileInIsolatedStorage()
-        {
-            IsolatedStorageFile isolatedFile = IsolatedStorageFile.GetUserStoreForAssembly();
-
-            using (IsolatedStorageFileStream stream = new IsolatedStorageFileStream("CompareToolStatusData", FileMode.OpenOrCreate, isolatedFile))
-            {
-                using (StreamReader sr = new StreamReader(stream))
-                {
-                    var data = sr.ReadLine();
-
-                    if (data != string.Empty)
-                    {
-                        DataSelectionStatus = data;
-
-                        if (DataSelectionStatus == "Yes")
-                            IsDataSelected = true;
-                        else
-                            IsDataSelected = false;
-                    }
-                    else
-                    {                        
-                        DataSelectionStatus = string.Empty;
-
-                        if (DataSelectionStatus == "Yes")
-                            IsDataSelected = true;
-                        else
-                            IsDataSelected = false;
-                    }
-                }
-            }
-
-            using (IsolatedStorageFileStream stream = new IsolatedStorageFileStream("CompareToolFilesList", FileMode.OpenOrCreate, isolatedFile))
-            {
-                using (StreamReader sr = new StreamReader(stream))
-                {
-                    var fileName = sr.ReadLine();
-                    var itemsList = new List<string>();
-                    while (fileName != null)
-                    {
-                        itemsList.Add(fileName);
-                        fileName = sr.ReadLine();
-                    }
-
-                    InputCollector.FirstFileName = itemsList[0];
-                    InputCollector.SecondFileName = itemsList[1];
-                }
-            }
-        }
-
         public static void OnComparisonFinished(Object source, ComparatorEventArgs e)
         {
            WriteTestResult(e.IsSuccess);
