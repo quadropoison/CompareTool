@@ -21,7 +21,9 @@ namespace CompareTool
                     Console.WriteLine("- - > Compare Tool v. 0.1 < - -");
                     Console.WriteLine(" ");
                     Console.WriteLine("> MENU <\n");
-                    Console.WriteLine("*** Please enter the number that you want to do:\n");
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("*** Please choose action, type the number and press Enter to proceed\n");
+                    Console.ResetColor();
                     Console.WriteLine("1. Show avaiable files list\n");
                     Console.WriteLine("2. Select files\n");
                     Console.WriteLine("3. Show selected file names\n");
@@ -66,8 +68,8 @@ namespace CompareTool
                         case "9":
                             break;
 
-                        default:   
-                            ShowMenuDialog("Sorry, invalid selection\n");                          
+                        default:
+                            ConsoleOutput.ShowMenuDialog("Sorry, invalid selection\n");                          
                             MakeMenuVisible();
                             break;
                     }
@@ -125,10 +127,7 @@ namespace CompareTool
                     break;
             }
 
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.SetCursorPosition(0, Console.CursorTop - 1);
-            Console.WriteLine($"Your choice is \"{text}\"");
-            Console.ResetColor();
+            ConsoleOutput.ShowMenuDialogUserChoice(text);
         }
 
         private static void CompareFiles(TextFilesComparator textFilesComparator)
@@ -138,7 +137,7 @@ namespace CompareTool
 
             if (string.IsNullOrEmpty(fileFirst) || string.IsNullOrEmpty(fileSecond))
             {
-                ShowMenuDialog("\nPlease select at least two files to start comparing\n");
+                ConsoleOutput.ShowMenuDialog("\nPlease select at least two files to start comparing\n");
 
                 MakeMenuVisible();
                 return;
@@ -167,7 +166,7 @@ namespace CompareTool
         {
             if (!IsDataCompared)
             {
-                ShowMenuDialog("\nData was not compared\n");
+                ConsoleOutput.ShowMenuDialog("\nData was not compared\n");
                                 
                 MakeMenuVisible();
                 return;
@@ -186,12 +185,13 @@ namespace CompareTool
         private static void ShowSelectedFiles()
         {
             var fileBundle = InputCollector.CollectFileNamesToCompare();
+
             Console.WriteLine("{0}Selected files :{0}", "\n");
             Console.ForegroundColor = ConsoleColor.Yellow;
             fileBundle.ShowToConsoleStringsList();
             Console.ResetColor();
 
-            Console.SetCursorPosition(0, Console.CursorTop - 1);            
+            Console.SetCursorPosition(0, Console.CursorTop - 1);                       
             Console.WriteLine("Press R to reset selected files or any other key to confirm");
 
             ResetSelectedFiles();
@@ -235,20 +235,10 @@ namespace CompareTool
         {
             ConsoleKeyInfo keyInfo;
 
-            do
-            {
-              Console.SetCursorPosition(0, Console.CursorTop);
-              Console.WriteLine("Press Enter to continue\n");
-              keyInfo = Console.ReadKey();
-
-                if (keyInfo.Key != ConsoleKey.Enter)
-                {
-                    Console.SetCursorPosition(0, Console.CursorTop);
-                }
-
-            } while (keyInfo.Key != ConsoleKey.Enter);
+            ConsoleOutput.ShowMenuDialogWhileKeyEnterNotPressed(out keyInfo);
                    
             IsMenuVisible = true;
+
             Console.Clear();
         }
 
@@ -262,22 +252,14 @@ namespace CompareTool
                 InputCollector.SecondFileName = null;
                 FileWriter.IsDataSelected = false;
 
-                ShowMenuDialog("\nFiles selection state reseted successfully\n");
+                ConsoleOutput.ShowMenuDialog("\nFiles selection state reseted successfully\n");
 
                 FileWriter.WriteDataToFileInIsolatedStorage(FileWriter.DataSelectionStatus = "No");
             }
             else
             {
-                ShowMenuDialog("\nSelected files were confirmed successfully\n");
+                ConsoleOutput.ShowMenuDialog("\nSelected files were confirmed successfully\n");
             }
-        }
-
-        private static void ShowMenuDialog(string message)
-        {
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.SetCursorPosition(0, Console.CursorTop);
-            Console.WriteLine(message);
-            Console.ResetColor();
         }
     }
 }

@@ -72,5 +72,36 @@ namespace CompareTool
             Console.WriteLine("{1}There is no such file '{0}' in The Test Folder, try another one{1}", fileName, "\n");
             Console.ResetColor();
         }
+
+        public static void ShowMenuDialog(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.SetCursorPosition(0, Console.CursorTop);
+            Console.WriteLine(message);
+            Console.ResetColor();
+        }
+
+        public static void ShowMenuDialogUserChoice(string text)
+        {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.SetCursorPosition(0, Console.CursorTop - 1);
+            Console.WriteLine($"Your choice is \"{text}\"");
+            Console.ResetColor();
+        }
+
+        public static void ShowMenuDialogWhileKeyEnterNotPressed(out ConsoleKeyInfo keyInfo)
+        {
+            do
+            {
+                Console.SetCursorPosition(0, Console.CursorTop);
+                Console.WriteLine("Press Enter to continue\n");
+                keyInfo = Console.ReadKey();
+
+                if (keyInfo.Key != ConsoleKey.Enter)
+                {
+                    Console.SetCursorPosition(0, Console.CursorTop);
+                }
+            } while (keyInfo.Key != ConsoleKey.Enter);
+        }
     }
 }
