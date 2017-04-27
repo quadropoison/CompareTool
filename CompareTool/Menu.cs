@@ -138,10 +138,10 @@ namespace CompareTool
             string fileFirst = InputCollector.FirstFileName;
             string fileSecond = InputCollector.SecondFileName;
 
-            if (fileFirst == null || fileSecond == null)
+            if (string.IsNullOrEmpty(fileFirst) || string.IsNullOrEmpty(fileSecond))
             {
                 Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.SetCursorPosition(0, Console.CursorTop);
                 Console.WriteLine("\nPlease select at least two files to start comparing\n");
                 Console.ResetColor();
                 MakeMenuVisible();
@@ -214,6 +214,7 @@ namespace CompareTool
 
             if (InputCollector.FirstFileName == null || InputCollector.SecondFileName == null)
             {
+                FileWriter.WriteDataToFileInIsolatedStorage(FileWriter.DataSelectionStatus = "No");
                 MakeMenuVisible();
                 FileWriter.IsDataSelected = false;
                 return;
