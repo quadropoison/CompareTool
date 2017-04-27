@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.IO.IsolatedStorage;
-using System.ComponentModel;
 
 namespace CompareTool
 {
@@ -86,23 +85,42 @@ namespace CompareTool
         {
             IsolatedStorageFile isolatedFile = IsolatedStorageFile.GetUserStoreForAssembly();
 
-            using (IsolatedStorageFileStream stream = new IsolatedStorageFileStream("CompareToolStatusData", FileMode.Create, isolatedFile))
-            {
-                using (StreamWriter sw = new StreamWriter(stream))
-                {                    
-                    sw.WriteLine(data.ToString());
-                }
-            }
+            WriteIsolatedCompareToolStatusData(data, isolatedFile);
 
-            using (IsolatedStorageFileStream stream = new IsolatedStorageFileStream("CompareToolFilesList", FileMode.Create, isolatedFile))
+            WriteIsolatedCompareToolFilesList(isolatedFile);
+        }
+
+        private static void WriteIsolatedCompareToolFilesList(IsolatedStorageFile isolatedFile)
+        {
+            using (
+            IsolatedStorageFileStream stream = new IsolatedStorageFileStream(
+            "CompareToolFilesList", 
+            FileMode.Create,
+            isolatedFile))
             {
                 using (StreamWriter sw = new StreamWriter(stream))
                 {
                     List<string> fileBundle = InputCollector.CollectFileNamesToCompare();
+                    
                     foreach (string file in fileBundle)
                     {
                         sw.WriteLine(file);
-                    }                    
+                    }
+                }
+            }
+        }
+
+        private static void WriteIsolatedCompareToolStatusData(object data, IsolatedStorageFile isolatedFile)
+        {
+            using (
+            IsolatedStorageFileStream stream = new IsolatedStorageFileStream(
+            "CompareToolStatusData", 
+            FileMode.Create, 
+            isolatedFile))
+            {
+                using (StreamWriter sw = new StreamWriter(stream))
+                {
+                    sw.WriteLine(data.ToString());
                 }
             }
         }
