@@ -42,34 +42,40 @@ namespace CompareTool
         {
             IsolatedStorageFile isolatedFile = IsolatedStorageFile.GetUserStoreForAssembly();
 
-            using (IsolatedStorageFileStream stream = new IsolatedStorageFileStream("CompareToolStatusData", FileMode.OpenOrCreate, isolatedFile))
+            ReadIsolatedCompareToolStatusData(isolatedFile);
+
+            ReadIsolatedCompareToolFilesList(isolatedFile);
+        }
+
+        private static void ReadIsolatedCompareToolStatusData(IsolatedStorageFile isolatedFile)
+        {
+            using (
+            IsolatedStorageFileStream stream = new IsolatedStorageFileStream(
+            "CompareToolStatusData", 
+            FileMode.OpenOrCreate,
+            isolatedFile))
             {
                 using (StreamReader sr = new StreamReader(stream))
                 {
                     var data = sr.ReadLine();
 
-                    if (data != string.Empty)
-                    {
-                        FileWriter.DataSelectionStatus = data;
+                    FileWriter.DataSelectionStatus = data;
 
-                        if (FileWriter.DataSelectionStatus == "Yes")
-                            FileWriter.IsDataSelected = true;
-                        else
-                            FileWriter.IsDataSelected = false;
-                    }
+                    if (FileWriter.DataSelectionStatus == "Yes")
+                        FileWriter.IsDataSelected = true;
                     else
-                    {
-                        FileWriter.DataSelectionStatus = string.Empty;
-
-                        if (FileWriter.DataSelectionStatus == "Yes")
-                            FileWriter.IsDataSelected = true;
-                        else
-                            FileWriter.IsDataSelected = false;
-                    }
+                        FileWriter.IsDataSelected = false;
                 }
             }
+        }
 
-            using (IsolatedStorageFileStream stream = new IsolatedStorageFileStream("CompareToolFilesList", FileMode.OpenOrCreate, isolatedFile))
+        private static void ReadIsolatedCompareToolFilesList(IsolatedStorageFile isolatedFile)
+        {
+            using (
+            IsolatedStorageFileStream stream = new IsolatedStorageFileStream(
+            "CompareToolFilesList",
+            FileMode.OpenOrCreate,
+            isolatedFile))
             {
                 using (StreamReader sr = new StreamReader(stream))
                 {
