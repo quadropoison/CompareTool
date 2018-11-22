@@ -8,7 +8,7 @@ This tool can help in everyday tasks for data analysis. It just read content fro
 
 ## What was implemented
 
-Current implementation consists from: 
+Current implementation consists of: 
 
 * Console interactive menu
 * Ability to select any file from added previously. 
@@ -23,4 +23,4 @@ Current implementation consists from:
 3. Select files.
 4. Compare selected files.
 
- - Log will be saved into bin/Release(or Debug)/Output directory
+ - A log will be saved into bin/Release(or Debug)/Output directory
